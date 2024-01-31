@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <title>ambil tanggal</title>
+
+</head>
+<body>
+    
+    <div id="app" style="display: flex;">
+        <div class="container_isi">
+            <div style="width: 90%; padding: 10px; margin: auto;">
+                <div class="judul">
+                    get current date
+                </div>
+
+                <div class="container_grid">
+                    <div class="grid-container-tanggal">
+                        <div class="grid-item-tanggal">Hari</div>  
+                        <div class="grid-item-tanggal">Tanggal</div>
+                        <div class="grid-item-tanggal">Bulan</div>
+                        <div class="grid-item-tanggal">Tahun</div>  
+                        <div class="grid-item-tanggal"> {{hariini}} </div>
+                        <div class="grid-item-tanggal"> {{tanggal}} </div>
+                        <div class="grid-item-tanggal"> {{bulanini}} </div>
+                        <div class="grid-item-tanggal"> {{tahun}} </div>
+                    </div>
+
+                    <div class="grid-container">
+                        <div class="grid-item">Jam</div>
+                        <div class="grid-item">Menit</div>
+                        <div class="grid-item">Detik</div>
+                        <div class="grid-item"> {{jam}} </div>
+                        <div class="grid-item"> {{menit}} </div>
+                        <div class="grid-item"> {{detik}} </div>
+                    </div>
+
+                    <div class="grid-container-last">
+                        <div class="grid-item">Frist</div>
+                        <div class="grid-item">Last</div>
+                        <div class="grid-item"> {{frist}} </div>
+                        <div class="grid-item"> {{last}} </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="container_ubah">
+                <!-- @submit.prevent agar button tidak refrash -->
+                <form @submit.prevent="handelFormSubmit">
+
+                    <table style="width: 100%;">
+                        <tr>
+                            <td><label>Tanggal</label></td>
+                            <td><label>Bulan</label></td>
+                            <td><label>Tahun</label></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" v-model.number="input_tanggal" placeholder="Tanggal = 23"/></td>
+                            <td><input type="text" v-model.number="input_bulan" placeholder="Bulan = 3"/></td>
+                            <td><input type="text" v-model.number="input_tahun" placeholder="Tahun = 2" /></td>
+                        </tr>
+                    </table>
+
+                    <button type="submit">Submit</button>
+                </form> 
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const app = {
+            data() {
+                return {
+                    tanggal:0,
+                    bulan:0,
+                    tahun:0,
+                    hari:0,
+                    jam:0,
+                    menit:0,
+                    detik:0,
+                    last:0,
+                    frist:0,
+                    hariini:'',
+                    bulanini:'',
+                    input_tanggal:'',
+                    input_tahun:'',
+                    input_bulan:'',
+                }
+            },
+            methods: {
+                getDate(){
+                    let date = new Date();
+                    this.tahun = date.getFullYear();
+                    this.bulan = date.getMonth() + 1;
+                    this.tanggal = date.getDate();
+                    this.hari = date.getDay();
+                    console.log(this.last)
+                    this.setHari(this.hari);
+                    this.setBulan(this.bulan)
+                },
+                getSetTime(){
+                    let date = new Date()
+                    this.jam = date.getHours();
+                    this.menit = date.getMinutes();
+                    this.detik = date.getSeconds();
+                },
+                fristAndLast(){
+                    let date = new Date()
+                    this.frist = new Date(date.getFullYear(), date.getMonth(),1).toLocaleDateString(undefined, { day:"2-digit", month:"2-digit" , year:"numeric" });
+                    this.last = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { day:"2-digit", month:"2-digit" , year:"numeric" });
+                    console.log(this.frist)
+                    console.log(this.last)
+                },
+                handelFormSubmit(){
+                    this.getSetBulan();
+                    console.log(this.bulan, this.tahun) // tahun berubah menjadi string
+                    this.addYear();
+                },
+                getSetBulan(){
+                    let wulan = (this.bulan + Number(this.input_bulan));
+                    if (wulan > 12){
+                        this.tahun = this.tahun + Math.floor(wulan/12)
+                        wulan = wulan % 12 
+                    }
+                    this.bulan = wulan
+                    this.setBulan(this.bulan)
+                },
+                addYear(){
+                    let taun = this.tahun + Number(this.input_tahun)
+                    this.tahun = taun
+                },
+                setHari(hari){
+                    switch (hari) {
+                        case 0:
+                            this.hariini = 'Minggu'
+                            break;
+
+                        case 1:
+                            this.hariini = 'Senin'
+                            break;
+
+                        case 2:
+                            this.hariini = 'Selasa'
+                            break;
+
+                        case 3:
+                            this.hariini = 'Rabu'
+                            break;
+
+                        case 4:
+                            this.hariini = 'Kamis'
+                            break;
+                    
+                        case 5:
+                            this.hariini = 'Jumat'
+                            break;
+
+                        case 5:
+                            this.hariini = 'Sabtu'
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+                setBulan(bulan){
+                    switch (bulan) {
+                        case 1:
+                            this.bulanini = 'Januari'
+                            break;
+
+                        case 2:
+                            this.bulanini = 'Februari'
+                            break;
+
+                        case 3:
+                            this.bulanini = 'Maret'
+                            break;
+
+                        case 4:
+                            this.bulanini = 'April'
+                            break;
+
+                        case 5:
+                            this.bulanini = 'Mei'
+                            break;
+                    
+                        case 6:
+                            this.bulanini = 'Juni'
+                            break;
+
+                        case 7:
+                            this.bulanini = 'Juli'
+                            break;
+
+                        case 8:
+                            this.bulanini = 'Agustus'
+                            break;
+
+                        case 9:
+                            this.bulanini = 'September'
+                            break;
+
+                        case 10:
+                            this.bulanini = 'Oktober'
+                            break;
+
+                        case 11:
+                            this.bulanini = 'November'
+                            break;
+
+                        case 12:
+                            this.bulanini = 'Desember'
+                            break;
+
+                        default:
+                            break;
+                    }
+                },
+                
+            },
+            mounted() {
+                this.getDate()
+                this.fristAndLast()
+                this.getSetTime()
+                setInterval(this.getSetTime, 1000);
+            },
+        }
+        Vue.createApp(app).mount('#app')
+    </script>
+</body>
+
+<style>
+    body{
+        background-color: #ebe5e5;
+    }
+
+    .container_isi{
+        background: linear-gradient(to top, #202060 0%, #0000cc 100%); 
+        width: 95%; 
+        margin: 70px auto 0px auto; 
+        border-radius: 10px; 
+        padding: 10px;
+        box-shadow: 2px 5px 50px  #302f2f;
+    }
+
+    .judul{
+        width: 100%;
+        margin-bottom: 10px;
+        text-align: center;
+        font-size: 30px; 
+        color: aliceblue;
+        font-weight: bold; 
+        font-family:system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    .container_grid{
+        background: linear-gradient(to top right, #0000ff 0%, #ff6600 100%);
+        border-radius: 10px;
+        box-shadow: 2px 2px 20px  #888888;
+        width: 100%; 
+        height: fit-content;
+        transition: 0.5s;
+    }
+
+    .container_grid:hover{
+        box-shadow: 2px 2px 20px  #d5d2d2;
+        transition: 0.5s;
+    }
+
+    .grid-container-tanggal {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    border-radius: 10px 10px 0px 0px;
+    color: white;
+    }
+
+    .grid-item-tanggal {
+    padding: 5px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 25px;
+    text-align: center;
+    }
+
+    .grid-container {
+    display: grid;
+    padding-top: 10px;
+    grid-template-columns: auto auto auto;
+    color: white;
+    border-radius: 0px 0px 10px 10px;
+    }
+
+    .grid-container-last {
+    display: grid;
+    padding-top: 10px;
+    grid-template-columns: auto auto;
+    color: white;
+    border-radius: 0px 0px 10px 10px;
+    }
+
+    .grid-item {
+    padding: 5px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 25px;
+    text-align: center;
+    }
+
+    .container_ubah{
+        width: 90%;
+        margin: 10px auto 10px auto;
+        padding: 10px;
+        background-color: #ff6600;
+        color: aliceblue; 
+        text-align: center;
+        font-size: large;
+        font-weight: 900; 
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+
+    .container_ubah input {
+        width: 90%;
+        padding: 5px;
+        border: 1px solid rgb(242, 242, 247);
+        border-radius: 3px;
+    }
+
+    .container_ubah button{
+        margin-top: 10px;
+        align-items: center;
+        background-image: linear-gradient(144deg,#AF40FF, #5B42F3 50%,#00DDEB);
+        border: 0;
+        border-radius: 8px;
+        box-shadow: 1px 1px 10px rgba(212, 211, 213)  ;
+        color: #FFFFFF;
+        font-family: Phantomsans, sans-serif;
+        font-size: 20px;
+        justify-content: center;
+        max-width: 100%;
+        min-width: 140px;
+        padding: 3px;
+        transition: 0.5s;
+        cursor: pointer;
+    }
+
+    .container_ubah button:hover{
+        transition: 0.5s;
+        box-shadow: 1px 1px 10px rgb(0, 0, 0)  ;
+
+    }
+
+</style>
+</html>
