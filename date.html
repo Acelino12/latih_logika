@@ -44,7 +44,6 @@
                         <div class="grid-item"> {{last}} </div>
                     </div>
                 </div>
-                
             </div>
 
             <div class="container_ubah">
@@ -68,6 +67,7 @@
                 </form> 
 
             </div>
+
         </div>
 
     </div>
@@ -84,6 +84,9 @@
                     menit:0,
                     detik:0,
                     last:0,
+                    last_day:0,
+                    last_mouth:0,
+                    last_year:0,
                     frist:0,
                     hariini:'',
                     bulanini:'',
@@ -99,7 +102,6 @@
                     this.bulan = date.getMonth() + 1;
                     this.tanggal = date.getDate();
                     this.hari = date.getDay();
-                    console.log(this.last)
                     this.setHari(this.hari);
                     this.setBulan(this.bulan)
                 },
@@ -111,10 +113,17 @@
                 },
                 fristAndLast(){
                     let date = new Date()
-                    this.frist = new Date(date.getFullYear(), date.getMonth(),1).toLocaleDateString(undefined, { day:"2-digit", month:"2-digit" , year:"numeric" });
-                    this.last = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { day:"2-digit", month:"2-digit" , year:"numeric" });
-                    console.log(this.frist)
-                    console.log(this.last)
+                    this.frist = new Date(date.getFullYear(), date.getMonth(),1).toLocaleDateString(undefined, { day:"2-digit", month:"long" , year:"numeric" });
+                    this.last = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { day:"2-digit", month:"long" , year:"numeric" });
+                    let day = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { day:"2-digit"});
+                    let month = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { month:"2-digit" });
+                    let year = new Date(date.getFullYear(), date.getMonth()+1,0).toLocaleDateString(undefined, { year:"numeric" });
+                    this.last_day = Number(day)
+                    this.last_mouth = Number(month)
+                    this.last_year = Number(year)
+                    console.log(this.last_day)
+                    console.log(this.last_mouth)
+                    console.log(this.last_year)
                 },
                 handelFormSubmit(){
                     this.getSetBulan();
@@ -243,7 +252,7 @@
     .container_isi{
         background: linear-gradient(to top, #202060 0%, #0000cc 100%); 
         width: 95%; 
-        margin: 70px auto 0px auto; 
+        margin: 50px auto 50px auto; 
         border-radius: 10px; 
         padding: 10px;
         box-shadow: 2px 5px 50px  #302f2f;
